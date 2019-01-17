@@ -7,6 +7,9 @@
 </head>
 
 <body>
+    <style>.mySlides {display:none}</style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 	<div class="nav">
 		<h1>Brian Cochran</h1>
 		<ul>
@@ -17,21 +20,14 @@
 		</ul>
 	</div>
 	
-	<div class="quote">
-		<h1>The present is theirs; the future, for which I really worked, is mine.<br>-Nikola Tesla</br><h1>
-	</div>
-	
 	<div class="card" id="about">
 		<h2>Bio</h2>
 		<p>
 			<p><b>Brian Cochran</b></p>
 			<p><b>Georgia Institute of Technology</b>: Degree Candidate for Bachelor's in Computer Science</p>
-			<p><b>Interests</b>: Robotics, electronics, 3D Modeling and Animation</p>
-			<p><b>Skills</b>: Object-Oriented Programming (Python), 3D Modeling and CAD, Soldering, 3D Printing</p>
+			<p><b>Interests</b>: Robotics, electronics, programming, 3D Modeling and Animation</p>
+			<p><b>Skills</b>: Object-Oriented Programming (Java, Python), 3D Modeling and CAD, 3D Printing</p>
 			<p><b>Involvement</b>: Georgia Tech RoboJackets, mentor to <i>FIRST</i> Robotics Teams</p>
-			<p>I am committed to creating technology that focuses on the end goal, the user's goal, and not the technology itself.
-				I hope to continue my education of robotics so that I can use my knowledge to help others.</p>
-		</p>
 	</div>
 	
 	<div class="card" id="contact">
@@ -49,32 +45,257 @@
 	<div class="workCard" id="sample">
 		<h2>Samples of My Work</h2>
 	</div>
-	
-	<div class="card" id="sample">
-		<h2>Competition Robot</h2>
-		<p><i>FIRST</i> Competition Robot I programmed and designed.
-		 This robot won the <i>FIRST</i> Georgia State Competition.
-		 The design expands from a small eighteen inch height to over five feet by utilizing a scissor lift mechanism.
-		 Based off a LEGO NXT brick, this robot is programmed in C and won awards for its autonomous path movements.
+    
+    <div class="card" id="sample">
+		<h2>Settlers of Catan 3D Printed Magnetic Board</h2>
+		<p>A custom 3D modelled board for the game Settlers of Catan.
+         The pieces were 3D printed, and I hand painted them. Each piece has magnets on the side to allow them to interlock and connect.
+         They are now available for sale at my online <a href = "https://notairportwifi.etsy.com">shop</a>.
+        </p>
+        <div class="w3-center">
+          <div class="w3-section">
+            <button class="w3-button w3-light-grey" onclick="plusDivs(-1)">< Prev</button>
+            <button class="w3-button w3-light-grey" onclick="plusDivs(1)">Next ></button>
+          </div>
+          <button class="w3-button demo" onclick="currentDiv(1)">1</button> 
+          <button class="w3-button demo" onclick="currentDiv(2)">2</button> 
+          <button class="w3-button demo" onclick="currentDiv(3)">3</button> 
+          <button class="w3-button demo" onclick="currentDiv(4)">4</button> 
+          <button class="w3-button demo" onclick="currentDiv(5)">5</button>
+          <button class="w3-button demo" onclick="currentDiv(6)">6</button> 
+        </div>
+        
+        <div class="w3-content" style="max-width:800px">
+          <img class="mySlides" src="soc_board/soc_1.JPG" style="width:100%">
+          <img class="mySlides" src="soc_board/soc_2.JPG" style="width:100%">
+          <img class="mySlides" src="soc_board/soc_3.JPG" style="width:100%">
+          <img class="mySlides" src="soc_board/soc_4.JPG" style="width:100%">
+          <img class="mySlides" src="soc_board/soc_5.jpg" style="width:100%">
+          <img class="mySlides" src="soc_board/soc_6.png" style="width:100%">
+        </div>
+        
+	</div>
+    
+    <div class="card" id="sample">
+		<h2>Georgia Tech RoboJackets RoboRacing</h2>
+		<p>I work on the software team for the competition GT Robotics team, RoboRacing.
+         We build autonomous small-scale race cars that use ROS, OpenCV, and an array of sensors to navigate circuit and obstacle courses.
+         We currently have two cars, a hobby-sized rc car named Sedani and a go-kart sized car named Bigoli.
+         I work on everything from computer vision to find road lines and signs to firmware that ensures the car moves.
+         
+         <p>Check out our RoboJackets GitHub to learn more. 
+         <a href = "https://github.com/RoboJackets/roboracing-software">https://github.com/RoboJackets/roboracing-software</a></p>
 		 </p>
-		<img src = "Robot1_expanded.jpg">
+        <div class="w3-center">
+          <div class="w3-section">
+            <button class="w3-button w3-light-grey" onclick="plusDivs_gt(-1)">< Prev</button>
+            <button class="w3-button w3-light-grey" onclick="plusDivs_gt(1)">Next ></button>
+          </div>
+          <button class="w3-button gt" onclick="currentDiv_gt(1)">1</button> 
+          <button class="w3-button gt" onclick="currentDiv_gt(2)">2</button> 
+          <button class="w3-button gt" onclick="currentDiv_gt(3)">3</button> 
+          <button class="w3-button gt" onclick="currentDiv_gt(4)">4</button> 
+        </div>
+        <div class="w3-content" style="max-width:800px">
+          <img class="slides_gt" src="gt_robojackets/sedani_1.JPG" style="width:100%">
+          <img class="slides_gt" src="gt_robojackets/sedani_2.JPG" style="width:100%">
+          <img class="slides_gt" src="gt_robojackets/bigoli_1.jpg" style="width:100%">
+          <img class="slides_gt" src="gt_robojackets/bigoli_2.jpg" style="width:100%">
+        </div>
+	</div>
+    
+    <div class="card" id="sample">
+		<h2><i>FIRST</i> Competition Robots</h2>
+		<p>These are 3 years worth of competition robots I programmed and designed during  my time in high school.
+		 These robots have all competed in the <i>FIRST</i> Georgia State Championship and one even won!
+         Scissor lifts, linear screw drives, multi-leveled pulley systems, omni-wheels and many other mechanical designs are used by these robots.
+         They are programmed in C and Java and have won awards for autonomous path movements and design.
+         <p>I now mentor a other robotics teams and help teach middle and high school students about robotics, programming, and engineering.</p>
+		 </p>
+         
+        <div class="w3-center">
+          <div class="w3-section">
+            <button class="w3-button w3-light-grey" onclick="plusDivs_robot(-1)">< Prev</button>
+            <button class="w3-button w3-light-grey" onclick="plusDivs_robot(1)">Next ></button>
+          </div>
+          <button class="w3-button robot" onclick="currentDiv_robot(1)">1</button> 
+          <button class="w3-button robot" onclick="currentDiv_robot(2)">2</button> 
+          <button class="w3-button robot" onclick="currentDiv_robot(3)">3</button> 
+          <button class="w3-button robot" onclick="currentDiv_robot(4)">4</button>
+          <button class="w3-button robot" onclick="currentDiv_robot(5)">5</button> 
+          <button class="w3-button robot" onclick="currentDiv_robot(6)">6</button> 
+          <button class="w3-button robot" onclick="currentDiv_robot(7)">7</button> 
+        </div>
+        <div class="w3-content" style="max-width:800px">
+          <img class="slides_robot" src="ftc_robots/robot_2013_1.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2013_2.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2015_1.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2015_2.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2015_3.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2016_1.jpg" style="width:100%">
+          <img class="slides_robot" src="ftc_robots/robot_2016_2.jpg" style="width:100%">
+        </div>
+	</div>
+    
+    <div class="card" id="sample">
+		<h2>3D Modelling Art</h2>
+		<p>These are a subset of art I have made using 3D and 2D software. Most are made in Blender3D, Inkscape, and GIMP.
+        My 3D art focuses not only on the art and composition aspect, but also the technical aspect of good topology.
+		</p>
+        
+        <div class="w3-center">
+          <div class="w3-section">
+            <button class="w3-button w3-light-grey" onclick="plusDivs_design(-1)">< Prev</button>
+            <button class="w3-button w3-light-grey" onclick="plusDivs_design(1)">Next ></button>
+          </div>
+          <button class="w3-button design" onclick="currentDiv_design(1)">1</button> 
+          <button class="w3-button design" onclick="currentDiv_design(2)">2</button> 
+          <button class="w3-button design" onclick="currentDiv_design(3)">3</button> 
+          <button class="w3-button design" onclick="currentDiv_design(4)">4</button>
+          <button class="w3-button design" onclick="currentDiv_design(5)">5</button> 
+          <button class="w3-button design" onclick="currentDiv_design(6)">6</button> 
+          <button class="w3-button design" onclick="currentDiv_design(7)">7</button> 
+          <button class="w3-button design" onclick="currentDiv_design(8)">8</button>
+          <button class="w3-button design" onclick="currentDiv_design(9)">9</button> 
+        </div>
+        <div class="w3-content" style="max-width:800px">
+          <img class="slides_design" src="design/farm_lowPoly_orthogonal.png" style="width:100%">
+          <img class="slides_design" src="design/ic_design_characters_v1.png" style="width:100%">
+          <img class="slides_design" src="design/rocket_2.png" style="width:100%">
+          <img class="slides_design" src="design/v2.1_hiking_lowRes.png" style="width:100%">
+          <img class="slides_design" src="design/space_poster.jpeg" style="width:100%">
+          <img class="slides_design" src="design/rocket_small_scene.jpg" style="width:100%">
+          <img class="slides_design" src="design/deer.png" style="width:100%">
+          <img class="slides_design" src="design/compe_coffee_v1.png" style="width:100%">
+          <img class="slides_design" src="design/guitar_render.png" style="width:100%">
+        </div>
 	</div>
 	
-	<div class="card" id="sample">
-		<h2>Settlers of Catan Magnetic Board</h2>
-		<p>3D modeled Settlers of Catan board. These pieces were then 3D printed and magnets placed in the sides to allow them to interlock and connect.</p>
-		<img src = "settlers_of_catan.png">
-	</div>
-	
-	<div class="card" id="sample">
-		<h2>3D Guitar Studio Rendering</h2>
-		<p>A 3D model designed in Blender 3D and rendering using Cycles Rendering Engine.
-		 Modeled with respect to good topology and quad faces. 
-			The material textures are custom procedurally generated and put into studio lighting.
-			</p>
-		<img src = "guitar_render.png">
-	</div>
-	
+    
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+          showDivs(slideIndex += n);
+        }
+
+        function currentDiv(n) {
+          showDivs(slideIndex = n);
+        }
+
+        function showDivs(n) {
+          var i;
+          var x = document.getElementsByClassName("mySlides");
+          var dots = document.getElementsByClassName("demo");
+          if (n > x.length) {slideIndex = 1}    
+          if (n < 1) {slideIndex = x.length}
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-red", "");
+          }
+          x[slideIndex-1].style.display = "block";  
+          dots[slideIndex-1].className += " w3-red";
+        }
+    </script>
+    
+    
+    <script>
+        var slideIndex_gt = 1;
+        showDivs_gt(slideIndex_gt);
+
+        function plusDivs_gt(n) {
+          showDivs_gt(slideIndex_gt += n);
+        }
+
+        function currentDiv_gt(n) {
+          showDivs_gt(slideIndex_gt = n);
+        }
+
+        function showDivs_gt(n) {
+          var i;
+          var x = document.getElementsByClassName("slides_gt");
+          var dots = document.getElementsByClassName("gt");
+          if (n > x.length) {slideIndex_gt = 1}    
+          if (n < 1) {slideIndex_gt = x.length}
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-red", "");
+          }
+          x[slideIndex_gt-1].style.display = "block";  
+          dots[slideIndex_gt-1].className += " w3-red";
+        }
+    </script>
+    
+    
+    <script>
+        var slideIndex_robot = 1;
+        showDivs_robot(slideIndex_robot);
+
+        function plusDivs_robot(n) {
+          showDivs_robot(slideIndex_robot += n);
+        }
+
+        function currentDiv_robot(n) {
+          showDivs_robot(slideIndex_robot = n);
+        }
+
+        function showDivs_robot(n) {
+          var i;
+          var x = document.getElementsByClassName("slides_robot");
+          var dots = document.getElementsByClassName("robot");
+          if (n > x.length) {slideIndex_robot = 1}    
+          if (n < 1) {slideIndex_robot = x.length}
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-red", "");
+          }
+          x[slideIndex_robot-1].style.display = "block";  
+          dots[slideIndex_robot-1].className += " w3-red";
+        }
+    </script>
+    
+    <script>
+        var slideIndex_design = 1;
+        showDivs_design(slideIndex_design);
+
+        function plusDivs_design(n) {
+          showDivs_design(slideIndex_design += n);
+        }
+
+        function currentDiv_design(n) {
+          showDivs_design(slideIndex_design = n);
+        }
+
+        function showDivs_design(n) {
+          var i;
+          var x = document.getElementsByClassName("slides_design");
+          var dots = document.getElementsByClassName("design");
+          if (n > x.length) {slideIndex_design = 1}    
+          if (n < 1) {slideIndex_design = x.length}
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-red", "");
+          }
+          x[slideIndex_design-1].style.display = "block";  
+          dots[slideIndex_design-1].className += " w3-red";
+        }
+    </script>
+    
+    
+    
+    
+    
+    
+    
 </body>
 
 </html>
