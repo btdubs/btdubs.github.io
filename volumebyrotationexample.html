@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Volume by Rotation 3D view</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+		
+		<script src="https://unpkg.com/mathjs@10.3.0/lib/browser/math.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+
+/*
+	Quick example of rotating a function around as part of volume by rotation.
+*/
+
+// Controllable variables
+const resolution_z = 0.2; // lower = better
+const resolution_angular = 30; // higher = better
+var spin_angle = 0.0;//Math.PI;
+var z_center = 0.0;
+const z_offset_view = 10.0;
+
+// Storage variables
+var input_expression_text = "0.1 * x^2 + 1";
+var compiled_function = math.compile(input_expression_text);
+var show_wireframe = false;
+
+function myMathFunc(x) {
+	return compiled_function.evaluate({"x": x})
+}
+
+const createPaths = function (spin_angle, resolution_z, resolution_angular) {
+    // Function View
+	const paths = [];
+	paths.push([]);
+	for (let a = 0; a <= resolution_angular + 2; a++) {
+		paths[0].push(new BABYLON.Vector3(0, 0, z_center - z_offset_view)); //end cap
+	}
+    for (let z = z_center - z_offset_view; z <= z_center + z_offset_view; z+=resolution_z) {
+        const path = [];
+		let temp_resolution_angular = resolution_angular; //keeps vertex count the same at 0 and 360 degrees without fill
+		if (spin_angle != 2*Math.PI) {
+			path.push(new BABYLON.Vector3(0, 0, z - z_center)); //fill in area
+		} else {
+			temp_resolution_angular += 2;
+		}
+		if (spin_angle == 0) {
+			temp_resolution_angular += 1;
+		}
+		let radius = myMathFunc(z)
+		let angle_ratio = spin_angle / temp_resolution_angular;
+        for (let a = 0; a <= temp_resolution_angular; a++) {
+            let angle = a * angle_ratio;
+            let x = radius * Math.cos(angle);
+            let y = radius * Math.sin(angle);
+            path.push(new BABYLON.Vector3(x, y, z_center + z))
+        }
+
+		if (spin_angle != 0 && spin_angle != 2*Math.PI) {
+			path.push(path[0]); //fill in area
+		}
+		
+        paths.push(path)
+    }
+	
+	paths.push([]);
+	for (let a = 0; a <= resolution_angular + 2; a++) {
+		paths[paths.length-1].push(new BABYLON.Vector3(0, 0, z_center + z_offset_view)); //end cap
+	}
+
+    return paths;
+}
+
+const createScene = function () {
+	const scene = new BABYLON.Scene(engine);
+
+	const camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, 3 * Math.PI / 8, 30, BABYLON.Vector3.Zero());
+	camera.attachControl(canvas, true);
+	const light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 50, 0));
+	
+	scene.clearColor = new BABYLON.Color3.FromHexString("#2D9F94");
+
+    //Do function math
+    var paths = createPaths(spin_angle, resolution_z, resolution_angular)
+
+	var ribbon = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray: paths, closePath: false, closeArray: false, sideOrientation: BABYLON.Mesh.DOUBLESIDE, updatable: true});
+    ribbon.material = new BABYLON.StandardMaterial("");
+    ribbon.material.wireframe = show_wireframe;
+	
+	// Draw Z axis as "X axis" and the X and "Y axis"
+	const xAxisPoints = [];
+	xAxisPoints.push(new BABYLON.Vector3(0, 0, z_center - z_offset_view));
+	xAxisPoints.push(new BABYLON.Vector3(0, 0, z_center + z_offset_view));
+	let xLine = BABYLON.MeshBuilder.CreateLines("xLine", {points: xAxisPoints}, scene);
+	xLine.color = new BABYLON.Color3(1, 0, 0);
+	
+	const yAxisPoints = [];
+	yAxisPoints.push(new BABYLON.Vector3(z_center - z_offset_view, 0, 0));
+	yAxisPoints.push(new BABYLON.Vector3(z_center + z_offset_view, 0, 0));
+	let yLine = BABYLON.MeshBuilder.CreateLines("yLine", {points: yAxisPoints}, scene);
+	yLine.color = new BABYLON.Color3(0, 1, 0);
+	
+	const tick_count = z_offset_view * 2; // show tick every 1 space
+	const offset_lines = (z_offset_view * 2)/ tick_count;
+	for (let i = 0; i <= tick_count; i++) {
+		const xPts = [];
+		const tick = (z_center - z_offset_view) + (offset_lines * i)
+		xPts.push(new BABYLON.Vector3(-0.5, 0, tick));
+		xPts.push(new BABYLON.Vector3(0.5, 0, tick));
+		let xL = BABYLON.MeshBuilder.CreateLines("ticksX" + i, {points: xPts}, scene);
+		xL.color = new BABYLON.Color3(1, 0, 0);
+		
+		const yPts = []
+		yPts.push(new BABYLON.Vector3(tick, 0, -0.5,));
+		yPts.push(new BABYLON.Vector3(tick, 0, 0.5));
+		let yL = BABYLON.MeshBuilder.CreateLines("ticksY" + i, {points: yPts}, scene);
+		yL.color = new BABYLON.Color3(0, 1, 0);
+		
+	}
+	
+
+    // GUI
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+    var panel = new BABYLON.GUI.StackPanel();
+    panel.width = "220px";
+    panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+    advancedTexture.addControl(panel);
+	
+	var note1 = new BABYLON.GUI.TextBlock();
+    note1.text = "Center: x=" + z_center;
+    note1.height = "30px";
+    note1.color = "white";
+    panel.addControl(note1);
+	
+	var note2 = new BABYLON.GUI.TextBlock();
+    note2.text = "Range x=" + -z_offset_view + " to x=" + z_offset_view;
+    note2.height = "30px";
+    note2.color = "white";
+    panel.addControl(note2);
+
+    var textInput = new BABYLON.GUI.InputText();
+    textInput.height = "40px";
+    textInput.width = 1.0;
+    textInput.fontSize = 24;
+    textInput.color = "white";
+	textInput.text = input_expression_text;
+
+    panel.addControl(textInput);
+
+    var button = BABYLON.GUI.Button.CreateSimpleButton("but", "Recalculate");
+    button.height = "40px";
+    button.color = "white";
+    button.background = "green";
+    button.onPointerClickObservable.add(function () {
+        input_expression_text = textInput.text;
+        compiled_function = math.compile(textInput.text);
+		let p = createPaths(spin_angle, resolution_z, resolution_angular);
+		ribbon = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray: p, instance: ribbon});
+
+    });
+    panel.addControl(button);
+
+    var header = new BABYLON.GUI.TextBlock();
+    header.text = "Spin: 0 deg";
+    header.height = "30px";
+    header.color = "white";
+    panel.addControl(header);
+
+    var slider = new BABYLON.GUI.Slider();
+    slider.minimum = 0;
+    slider.maximum = 2 * Math.PI;
+    slider.value = 0.0;//Math.PI;
+    slider.height = "20px";
+    slider.width = "200px";
+    slider.onValueChangedObservable.add(function(value) {
+        header.text = "Spin: " + (BABYLON.Tools.ToDegrees(value) | 0) + " deg";
+        spin_angle = value;
+        let p = createPaths(spin_angle, resolution_z, resolution_angular);
+        ribbon = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray: p, instance: ribbon});
+
+    });
+    panel.addControl(slider);
+	
+	/* //shift center for better viewing #TODO: some issues shading. Will need to adjust x and y axis code too
+	var h2 = new BABYLON.GUI.TextBlock();
+    h2.text = "Center X: 0";
+    h2.height = "30px";
+    h2.color = "white";
+    panel.addControl(h2); 
+
+    var s2 = new BABYLON.GUI.Slider();
+    s2.minimum = -8;
+    s2.maximum = 8;
+    s2.value = 0.0;
+    s2.height = "20px";
+    s2.width = "200px";
+    s2.onValueChangedObservable.add(function(value) {
+	    z_center = Math.floor(value);
+        h2.text = "Center X: " + z_center;
+        let p = createPaths(spin_angle, resolution_z, resolution_angular);
+        ribbon = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray: p, instance: ribbon});
+    });
+    panel.addControl(s2);
+	*/
+	
+	
+	var p2 = new BABYLON.GUI.StackPanel();
+    p2.width = "200px";
+	p2.height = "30px";
+	p2.isVertical = false;
+    p2.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    p2.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+	
+	var checkbox = new BABYLON.GUI.Checkbox();
+	checkbox.isChecked = false;
+    checkbox.width = "20px";
+    checkbox.height = "20px";
+    checkbox.isChecked = false;
+    checkbox.color = "white";
+    checkbox.onIsCheckedChangedObservable.add(function(value) {
+		show_wireframe = value;
+        if (ribbon) {
+		    ribbon.material.wireframe = show_wireframe;
+		}
+    });
+    p2.addControl(checkbox);    
+
+    var h3 = new BABYLON.GUI.TextBlock();
+    h3.text = " show wireframe";
+	h3.height = "30px";
+    h3.width = "180px";
+    h3.marginLeft = "5px";
+    h3.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    h3.color = "white";
+    p2.addControl(h3);
+	
+	panel.addControl(p2);
+
+    return scene;
+}
+                window.initFunction = async function() {
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene                    
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
